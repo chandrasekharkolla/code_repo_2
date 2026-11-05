@@ -1,0 +1,5 @@
+# runtime-config.yaml
+# The version that this service builds its Lambda image with.
+python: "python3.14"
+nodejs: "nodejs18.x"
+java:   "java11"
