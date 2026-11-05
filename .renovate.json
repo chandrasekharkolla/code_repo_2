@@ -1,0 +1,65 @@
+{
+  "extends": ["config:base"],
+  "timezone": "America/Chicago",
+  "schedule": ["every 6 hours"],               // how often Renovate checks
+  "onboarding": false,
+
+  // ---------- Custom manager that reads the catalog ----------
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["runtime-config.yaml$"],
+      "matchStrings": [
+        "\"python\":\\s*\"(?<oldVersion>[^\\\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "runtime-catalog",
+      "registryUrls": [
+        "https://raw.githubusercontent.com/chandrasekharkolla/eng_repo/main/lambda-versions.yaml"
+      ],
+      "extractVersionTemplate": "python:(?<version>[^\\\"]+)",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["runtime-config.yaml$"],
+      "matchStrings": [
+        "\"nodejs\":\\s*\"(?<oldVersion>[^\\\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "runtime-catalog",
+      "registryUrls": [
+        "https://raw.githubusercontent.com/chandrasekharkolla/eng_repo/main/lambda-versions.yaml"
+      ],
+      "extractVersionTemplate": "nodejs:(?<version>[^\\\"]+)",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["runtime-config.yaml$"],
+      "matchStrings": [
+        "\"java\":\\s*\"(?<oldVersion>[^\\\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "runtime-catalog",
+      "registryUrls": [
+        "https://raw.githubusercontent.com/chandrasekharkolla/eng_repo/main/lambda-versions.yaml"
+      ],
+      "extractVersionTemplate": "java:(?<version>[^\\\"]+)",
+      "versioningTemplate": "loose"
+    }
+  ],
+
+  // ---------- What the MR will look like ----------
+  "packageRules": [
+    {
+      "matchPackageNames": ["runtime-catalog"],
+      "groupName": "lambda‑runtime‑bump",
+      "commitMessageTopic": "Bump Lambda runtimes",
+      "commitMessageExtra": "Automated – pulled from eng_repo catalog"
+    }
+  ],
+
+  "prCreation": "immediate",
+  "automerge": false
+}
